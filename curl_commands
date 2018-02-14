@@ -1,0 +1,60 @@
+# start elasticsearch server
+elasticsearch
+
+# confirm elasticsearch is running at port 9200
+curl -XGET 'localhost:9200'
+
+# check the health of the cluster
+curl -XGET 'localhost:9200/_cat/health?v'
+
+# create an index called novels
+curl -XPUT 'localhost:9200/novels'
+
+#confirm index is created by fetching data on all indices
+curl -XGET 'localhost:9200/_cat/indices?v'
+
+# add a documents to the index
+curl -XPUT 'localhost:9200/novels/genre/1?pretty' -d '
+		{"name": "Romance", "interesting": "yes"}'
+
+curl -XPOST 'localhost:9200/novels/genre/?pretty' -d '{"name": "Sci-fi", "interesting": "maybe"}'
+
+# add more documents of another type
+curl -XPUT 'localhost:9200/novels/authors/1?pretty' -d '{"name": "Sidney Sheldon", "novels_count": 18}'
+
+curl -XPUT 'localhost:9200/novels/authors/2?pretty' -d '{"name": "Charles Dickens", "novels_count": 16}'
+
+# retrieving documents
+
+curl -XGET 'localhost:9200/novels/genre/1?pretty'
+
+
+# retrieve non-existing document
+curl -XGET 'localhost:9200/novels/genre/5?pretty'
+
+
+# retrieve document with specific info
+curl -XGET 'localhost:9200/novels/genre/1?pretty&_source=name'
+
+## updating documents
+
+# adding an additional field
+curl -XPOST 'localhost:9200/novels/authors/2/_update?pretty' -d'
+{"doc":{
+    "Years":"1812-1870"
+    }
+}'
+
+# confirm the data has been updated
+curl -XGET 'localhost:9200/novels/authors/2?pretty'
+
+
+## Deleting documents
+curl -XDELETE 'localhost:9200/novels/authors/1?pretty'
+
+#confirm deletion
+curl -XGET 'localhost:9200/novels/authors/1?pretty'
+
+
+## Deleting index
+curl -XDELETE 'localhost:9200/novels?pretty'

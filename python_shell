@@ -1,0 +1,70 @@
+# create elasticsearch instance
+from elasticsearch import Elasticsearch
+ES_HOST = {"host": "localhost", "port": 9200}
+es = Elasticsearch(hosts=[ES_HOST])
+
+# create index
+INDEX_NAME = 'novels'
+response = es.indices.create(index=INDEX_NAME)
+print(response)
+
+
+# adding documents
+author1 = {"name": "Sidney Sheldon", "novels_count": 18}
+resp = es.index(index=INDEX_NAME, doc_type="authors", body=author1, id=1)
+print(resp)
+
+
+author2 = {"name": "Charles Dickens", "novels_count": 16}
+resp2 = es.index(index=INDEX_NAME, doc_type="authors", body=author2, id=2)
+print(resp2)
+
+
+genre1 = {"name": "Romance", "interesting": "yes"}
+resp1 = es.index(index=INDEX_NAME, doc_type="authors", body=genre1)
+print(resp1)
+
+genre2 = {"name": "Sci-fi", "interesting": "maybe"}
+resp2 = es.index(index=INDEX_NAME, doc_type="authors", body=genre2)
+print(resp2)
+
+
+# retrieving documents
+resp = es.get(index=INDEX_NAME, doc_type="authors", id=1)
+print(resp)
+
+
+resp = es.get(index=INDEX_NAME, doc_type="authors", id=2)
+print(resp["_source"])
+
+## updating documents
+# change data
+edit_author1 = {"name": "Sheldon Sid", "novels_count": 18}
+resp = es.index(index=INDEX_NAME, doc_type="authors", id=1, body=edit_author1)
+print(resp)
+# confirm
+resp = es.get(index=INDEX_NAME, doc_type="authors", id=1)
+print(resp)
+
+# add another field
+resp = es.update(index=INDEX_NAME, doc_type="authors", id=2, body={"doc": {"Years":"1812-1870"}})
+print(resp)
+# confirm
+resp = es.get(index=INDEX_NAME, doc_type="authors", id=2)
+print(resp)
+print(resp["_source"])
+
+
+# deleting documents
+resp = es.delete(index=INDEX_NAME, doc_type="authors", id=2)
+print(resp)
+#confirm
+resp = es.get(index=INDEX_NAME, doc_type="authors", id=2)
+print(resp)
+
+
+# delete an index
+resp = es.indices.delete(index=INDEX_NAME)
+print(resp)
+#confirm
+resp = es.get(index=INDEX_NAME, doc_type="authors", id=1)

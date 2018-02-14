@@ -1,0 +1,6 @@
+## configure system variables upon installation.
+## Example
+
+ES_HOME=~/apps/elasticsearch/elasticsearch-2.3.1
+JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_77/Contents/Home
+PATH=$ES_HOME/bin:$JAVA_HOME/bin:$PATH

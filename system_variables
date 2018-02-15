@@ -4,3 +4,7 @@
 ES_HOME=~/apps/elasticsearch/elasticsearch-2.3.1
 JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_77/Contents/Home
 PATH=$ES_HOME/bin:$JAVA_HOME/bin:$PATH
+
+
+# stackoverflow link on how to set JAVA_HOME variable on windows
+https://stackoverflow.com/questions/2619584/how-to-set-java-home-on-windows-7
